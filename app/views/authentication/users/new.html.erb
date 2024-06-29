@@ -4,6 +4,16 @@
   <% @user.errors.full_messages.each do |message| %>
     <div><%= message %></div>
   <% end %>
+
+  <div>
+    <%= form.label :avatar, 'Tu foto' %>
+    <%= form.file_field :avatar %>
+    <% if @user.avatar.attached? %>
+      <%= image_tag @user.avatar, class: 'avatar-preview' %>
+    <% else %>
+      <%= image_tag "placeholder1.png", class: 'avatar-preview' %>
+    <% end %>
+  </div>
   
   <div>
     <%= form.label :first_name %>
