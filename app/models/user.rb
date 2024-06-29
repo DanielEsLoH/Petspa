@@ -1,22 +1,24 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   has_secure_password
   validates :first_name, :last_name, :email, :username, :phone, :password, presence: true
-  normalizes :username, :first_name, :last_name, with: ->(value) { value.downcase }
-  
+  normalizes :username, :first_name, :last_name, with: lambda(&:downcase)
+
   validates :password, length: { minimum: 6 }
   validates :email, uniqueness: true,
-    format: { 
-      with: /\A([\w+\-.]+)@([a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+)\z/i,
-      message: :invalid
-    }
+                    format: {
+                      with: /\A([\w+\-.]+)@([a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+)\z/i,
+                      message: :invalid
+                    }
   normalizes :email, with: ->(email) { email.strip.downcase }
 
   validates :username, uniqueness: true,
-    length: { in: 3..15 },
-    format: {
-      with: /\A[a-z0-9A-Z]+\z/,
-      message: :invalid
-    }
+                       length: { in: 3..15 },
+                       format: {
+                         with: /\A[a-z0-9A-Z]+\z/,
+                         message: :invalid
+                       }
   validates :phone, uniqueness: true
 
   enum role: %i[client stylist admin]
