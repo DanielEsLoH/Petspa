@@ -2,8 +2,8 @@
 
 class User < ApplicationRecord
   has_secure_password
-  validates :first_name, :last_name, :email, :username, :phone, :password, presence: true
-  normalizes :username, :first_name, :last_name, with: lambda(&:downcase)
+  validates :first_name, :last_name, :email, :username, :phone, :password, presence: { message: :blank }
+  normalizes :username, :first_name, :last_name, with: ->(value) { value.downcase }
 
   validates :password, length: { minimum: 6 }
   validates :email, uniqueness: true,
@@ -22,6 +22,8 @@ class User < ApplicationRecord
   validates :phone, uniqueness: true
 
   enum role: %i[client stylist admin]
+
+  ROLES = %W[client stylist admin]
 
   ROLES.each do |role|
     define_method "#{role}?" do
