@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   namespace :authentication, as: '', path: '' do
-    resources :users, only: %i[new create], path: '/register', path_names: { new: '/' }
+    resources :users, only: %i[new create edit update], path: '/register', path_names: { new: '/' }
     resources :sessions, only: %i[new create destroy], path: '/login', path_names: { new: '/'}
   end
   root 'home#welcome'
